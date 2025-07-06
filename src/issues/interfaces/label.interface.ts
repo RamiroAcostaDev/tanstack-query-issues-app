@@ -1,3 +1,4 @@
+//labels interface
 export interface GithubLabel {
   id: number;
   node_id: string;
