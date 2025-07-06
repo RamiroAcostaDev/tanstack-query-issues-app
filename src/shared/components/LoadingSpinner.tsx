@@ -4,7 +4,7 @@ export const LoadingSpinner = () => {
   return (
     <div className="loading">
       <div className="animate-spin">
-        <FiRefreshCcw />
+        <FiRefreshCcw size={40} />
       </div>
     </div>
   );
