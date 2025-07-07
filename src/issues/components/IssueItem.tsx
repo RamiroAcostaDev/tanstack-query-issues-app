@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GithubIssue } from "../interfaces/issue.interface";
 import { FC } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getIssue, getIssueComments } from "../actions";
+// import { getIssue, getIssueComments } from "../actions";
 
 interface Props {
   issue: GithubIssue;
@@ -15,20 +15,20 @@ export const IssueItem: FC<Props> = ({ issue }) => {
   const queryClient = useQueryClient();
 
   //Permite hacer un prefech de los datos del issue cuando el mouse entra en el componente. Los datos se guardan en la cache de react-query y se cargan automáticamente cuando se accede a la ruta del issue.
-  const prefetchData = () => {
-    console.log("Prefetching data");
-    queryClient.prefetchQuery({
-      queryKey: ["issues", issue.number],
-      queryFn: () => getIssue(issue.number),
-      staleTime: 1000 * 60, // 1 minute
-    });
+  // const prefetchData = () => {
+  //   console.log("Prefetching data");
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["issues", issue.number],
+  //     queryFn: () => getIssue(issue.number),
+  //     staleTime: 1000 * 60, // 1 minute
+  //   });
 
-    queryClient.prefetchQuery({
-      queryKey: ["issues", issue.number, "comments"],
-      queryFn: () => getIssueComments(issue.number),
-      staleTime: 1000 * 60, // 1 minute
-    });
-  };
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["issues", issue.number, "comments"],
+  //     queryFn: () => getIssueComments(issue.number),
+  //     staleTime: 1000 * 60, // 1 minute
+  //   });
+  // };
 
   // Esta función es similar a prefetchData, pero en lugar de hacer una petición a la API, simplemente guarda los datos del issue en la cache de react-query.
   // Esto es útil si ya tienes los datos del issue y quieres que se carguen automáticamente
