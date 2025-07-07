@@ -2,6 +2,8 @@ import { FiInfo, FiMessageSquare, FiCheckCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { GithubIssue } from "../interfaces/issue.interface";
 import { FC } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { getIssue, getIssueComments } from "../actions";
 
 interface Props {
   issue: GithubIssue;
@@ -10,8 +12,45 @@ interface Props {
 export const IssueItem: FC<Props> = ({ issue }) => {
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
+  //Permite hacer un prefech de los datos del issue cuando el mouse entra en el componente. Los datos se guardan en la cache de react-query y se cargan automáticamente cuando se accede a la ruta del issue.
+  const prefetchData = () => {
+    console.log("Prefetching data");
+    queryClient.prefetchQuery({
+      queryKey: ["issues", issue.number],
+      queryFn: () => getIssue(issue.number),
+      staleTime: 1000 * 60, // 1 minute
+    });
+
+    queryClient.prefetchQuery({
+      queryKey: ["issues", issue.number, "comments"],
+      queryFn: () => getIssueComments(issue.number),
+      staleTime: 1000 * 60, // 1 minute
+    });
+  };
+
+  // Esta función es similar a prefetchData, pero en lugar de hacer una petición a la API, simplemente guarda los datos del issue en la cache de react-query.
+  // Esto es útil si ya tienes los datos del issue y quieres que se carguen automáticamente
+  const presetData = () => {
+    console.log("Prefetching data");
+    queryClient.setQueryData(["issues", issue.number], issue, {
+      updatedAt: Date.now() + 1000 * 60, // 1 minute
+    });
+    // Esto es para que los comentarios se carguen automáticamente cuando se accede a la ruta del issue.
+    // queryClient.setQueryData(
+    //   ["issues", issue.number, "comments"],
+    //   issue.comments,
+    //   {}
+    // );
+  };
+
   return (
-    <div className="flex items-center px-2 py-3 mb-5 border rounded-md bg-slate-900 hover:bg-slate-800">
+    <div
+      // onMouseEnter={prefetchData}
+      onMouseEnter={presetData}
+      className="flex items-center px-2 py-3 mb-5 border rounded-md bg-slate-900 hover:bg-slate-800"
+    >
       {issue.state === "close" ? (
         <FiCheckCircle size={30} color="green" className="min-w-10" />
       ) : (
