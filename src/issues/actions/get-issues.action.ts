@@ -18,6 +18,8 @@ export const getIssues = async (
     params.append("labels", selectedLabels.join(","));
   }
 
+  params.append("per_page", "5");
+
   const { data } = await githubApi.get<GithubIssue[]>("/issues", {
     params,
   });
