@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GithubIssue } from "../interfaces/issue.interface";
 import { FC } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { timeSince } from "../../helpers";
 // import { getIssue, getIssueComments } from "../actions";
 
 interface Props {
@@ -66,7 +67,7 @@ export const IssueItem: FC<Props> = ({ issue }) => {
         </a>
         {/* TODO: format date for {issue.created_at} */}
         <span className="text-gray-500">
-          #{issue.number} opened 2 days ago by{" "}
+          #{issue.number} opened {timeSince(issue.created_at)} ago by{" "}
           <span className="font-bold">{issue.user.login}</span>
         </span>
 
