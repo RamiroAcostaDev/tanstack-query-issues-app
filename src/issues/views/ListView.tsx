@@ -8,7 +8,7 @@ import { State } from "../interfaces/issue.interface";
 export const ListView = () => {
   const [state, setState] = useState<State>(State.All);
   const [selectedLabel, setSelectedLabel] = useState<string[]>([]);
-  const { issuesQuery } = useIssues({
+  const { issuesQuery, page, nextPage, prevPage } = useIssues({
     state: state,
     selectedLabel: selectedLabel,
   });
@@ -36,11 +36,17 @@ export const ListView = () => {
             />
 
             <div className="flex justify-between items-center">
-              <button className="p-2 bg-blue-500 rounded-md hover:bg-blue-700 transition-all">
+              <button
+                onClick={prevPage}
+                className="p-2 bg-blue-500 rounded-md hover:bg-blue-700 transition-all"
+              >
                 Anteriores
               </button>
-              <span>{1}</span>
-              <button className="p-2 bg-blue-500 rounded-md hover:bg-blue-700 transition-all">
+              <span>{page}</span>
+              <button
+                onClick={nextPage}
+                className="p-2 bg-blue-500 rounded-md hover:bg-blue-700 transition-all"
+              >
                 Siguientes
               </button>
             </div>
