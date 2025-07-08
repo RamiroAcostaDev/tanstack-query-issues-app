@@ -51,7 +51,7 @@ export const IssueItem: FC<Props> = ({ issue }) => {
       onMouseEnter={presetData}
       className="flex items-center px-2 py-3 mb-5 border rounded-md bg-slate-900 hover:bg-slate-800"
     >
-      {issue.state === "close" ? (
+      {issue.state === "closed" ? (
         <FiCheckCircle size={30} color="green" className="min-w-10" />
       ) : (
         <FiInfo size={30} color="red" className="min-w-10" />
@@ -69,6 +69,21 @@ export const IssueItem: FC<Props> = ({ issue }) => {
           #{issue.number} opened 2 days ago by{" "}
           <span className="font-bold">{issue.user.login}</span>
         </span>
+
+        <div className="flex flex-wrap">
+          {issue.labels.map((label) => (
+            <span
+              key={label.id}
+              className="animate-fade-in px-2 py-1 rounded-full text-xs font-semibold mr-2 mb-2"
+              style={{
+                border: `1px solid #${label.color}`,
+                color: `#${label.color}`,
+              }}
+            >
+              {label.name}
+            </span>
+          ))}
+        </div>
       </div>
 
       <img
